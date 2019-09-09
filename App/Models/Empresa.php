@@ -19,4 +19,9 @@ class Empresa extends Eloquent
         return $this->belongsTo(User::class, 'user_ID');
     }
 
+    public function empleados()
+    {
+        return $this->hasMany(EmpresaEmpleado::class, 'empresa_ID', 'ID');
+    }
+
 }

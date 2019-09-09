@@ -8,6 +8,9 @@ use App\Models\Empresa;
 use App\Models\User;
 
 const TIPO_CATEGORY = 'empresas';
+const TIPO_CATEGORY_PRO = 'empresas-pro';
+const SUBTIPO_TRIGO = 'trigo';
+const SUBTIPO_PAN = 'pan';
 
 class EmpresaController
 {
@@ -32,9 +35,11 @@ class EmpresaController
     private function baseQuery()
     {
         return Category::where([
-            'tipo' => TIPO_CATEGORY,
             'pais' => PAIS
-        ]);
+        ])->where(function($query){
+            $query->where(['tipo' => TIPO_CATEGORY])
+                ->orWhere(['tipo' => TIPO_CATEGORY_PRO]);
+        });
     }
 
     private function baseEmpresa()
