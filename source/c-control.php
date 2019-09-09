@@ -920,6 +920,7 @@ ORDER BY time ASC");
 <tr><td align="right"><acronym title="Porcentaje que se impondrá al patrimonio de cada ciudadano que supere el limite. Se redondea. Incluye cuentas y personal.">'._('Impuesto de patrimonio').'</acronym>:</td><td><input style="text-align:right;" type="text" name="impuestos" size="3" maxlength="6" value="' . $pol['config']['impuestos'] . '"'.$dis.' /><b>%</b></td></tr>
 <tr><td align="right"><acronym title="Limite minimo de patrimonio para recibir impuestos.">'._('Mínimo patrimonio').'</acronym>:</td><td><input class="pols" style="text-align:right;" type="text" name="impuestos_minimo" size="3" maxlength="6" value="' . $pol['config']['impuestos_minimo'] . '"'.$dis.' /> '.MONEDA.'</td></tr>
 <tr><td align="right"><acronym title="Impuesto fijo diario por cada empresa.">'._('Impuesto de empresa').'</acronym>:</td><td><input class="pols" style="text-align:right;" type="text" name="impuestos_empresa" size="3" maxlength="6" value="' . $pol['config']['impuestos_empresa'] . '"'.$dis.' /> '.MONEDA.'</td></tr>
+<tr><td align="right"><acronym title="Porcentaje que se impondrá sobre el salario bruto al trabajar y recibir salario en empresas productoras">'._('Impuesto al trabajo').'</acronym>:</td><td><input style="text-align:right;" type="text" name="impuestos_trabajo" size="3" maxlength="6" value="' . $pol['config']['impuestos_trabajo'] . '"'.$dis.' /><b>%</b></td></tr>
 </table>
 </fieldset>
 

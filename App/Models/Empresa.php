@@ -24,4 +24,14 @@ class Empresa extends Eloquent
         return $this->hasMany(EmpresaEmpleado::class, 'empresa_ID', 'ID');
     }
 
+    public function cuenta()
+    {
+        return $this->hasOne(Cuenta::class, 'ID', 'cuenta_ID');
+    }
+
+    public function soyEmpleado($user_ID)
+    {
+        return $this->empleados()->where(['user_ID' => $user_ID ])->get();
+    }
+
 }

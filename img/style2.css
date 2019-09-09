@@ -245,7 +245,7 @@ ul.breadcrumbs.alt1 li a { border-bottom:1px solid #CCC; }
 	font-weight:bold;
 }
 
-.amarillo, .azul {
+.amarillo, .azul, .verde {
 	background:#FFFFDD;
 	border:1px solid #FFD700;
 	padding:5px 10px 5px 10px; 
@@ -256,6 +256,11 @@ ul.breadcrumbs.alt1 li a { border-bottom:1px solid #CCC; }
 .azul { 
 	border:1px solid #00CCFF;
 	background:#D3F7FE; 
+}
+
+.verde {
+	border: 1px solid #8BC34A;
+    background: #DCEDC8;
 }
 .gris { color:#808080; }
 
