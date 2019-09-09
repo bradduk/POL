@@ -1,6 +1,6 @@
 <?php
 /* The source code packaged with this file is Free Software, Copyright (C) 2008 by
-** Javier González González <desarrollo AT virtualpol.com> <gonzomail AT gmail.com>
+** Javier Gonzï¿½lez Gonzï¿½lez <desarrollo AT virtualpol.com> <gonzomail AT gmail.com>
 ** It's licensed under the GNU GENERAL PUBLIC LICENSE v3 unless stated otherwise.
 ** You can get copies of the licenses here: http://www.gnu.org/licenses/gpl.html
 ** The source: http://www.virtualpol.com/codigo - TOS: http://www.virtualpol.com/TOS
@@ -13,11 +13,11 @@ include('config.php'); // config raiz
 
 
 $date = date('Y-m-d H:i:s');
-$IP = direccion_IP('longip'); // obtiene la IP en formato numérico (longip)
+$IP = direccion_IP('longip'); // obtiene la IP en formato numï¿½rico (longip)
 
 
 
-// Prevención de inyecciones varias
+// Prevenciï¿½n de inyecciones varias
 foreach (array('GET', 'POST', 'REQUEST', 'COOKIE') AS $_) {
 	foreach (${'_'.$_} AS $key=>$value) {
 		if (get_magic_quotes_gpc()) { $value = stripslashes($value); }
@@ -33,9 +33,9 @@ foreach (array('GET', 'POST', 'REQUEST', 'COOKIE') AS $_) {
 if (!isset($_SESSION)) { session_start(); } // inicia sesion PHP
 
 
-// nucleo del sistema de usuarios, comienza la verificación
+// nucleo del sistema de usuarios, comienza la verificaciï¿½n
 if (isset($_COOKIE['teorizauser'])) {
-	$result = mysql_query("SELECT ID, pass, lang, nick, estado, pols, pais, email, fecha_registro, rechazo_last, cargo, cargos, examenes, nivel, dnie FROM users WHERE nick = '".$_COOKIE['teorizauser']."' LIMIT 1", $link);
+	$result = mysql_query("SELECT ID, pass, lang, nick, estado, pols, pais, email, fecha_registro, rechazo_last, cargo, cargos, examenes, nivel, dnie, energia FROM users WHERE nick = '".$_COOKIE['teorizauser']."' LIMIT 1", $link);
 	while ($r = mysql_fetch_array($result)) { 
 		if (md5(CLAVE.$r['pass']) == $_COOKIE['teorizapass']) { // cookie pass OK
 			$session_new = true;
@@ -47,6 +47,7 @@ if (isset($_COOKIE['teorizauser'])) {
 			$pol['pais'] = $r['pais'];
 			$pol['rechazo_last'] = $r['rechazo_last'];
 			$pol['fecha_registro'] = $r['fecha_registro'];
+			$pol['energia'] = $r['energia'];
 
 			if (isset($r['lang'])) { $pol['config']['lang'] = $r['lang']; }
 
@@ -61,6 +62,7 @@ if (isset($_COOKIE['teorizauser'])) {
 			$_SESSION['pol']['pais'] = $r['pais'];
 			$_SESSION['pol']['estado'] = $r['estado'];
 			$_SESSION['pol']['dnie'] = $r['dnie'];
+			$_SESSION['pol']['energia'] = $r['energia'];
 		}
 	}  
 }
@@ -73,7 +75,7 @@ if (false AND !$_SERVER['HTTPS'] AND isset($pol['nick'])) { redirect('https://'.
 
 $vp['lang'] = $pol['config']['lang'];
 if ((isset($vp['lang'])) AND ($vp['lang'] != 'es_ES')) {
-	// Carga internacionalización
+	// Carga internacionalizaciï¿½n
 	$locale = $vp['lang'];
 	putenv("LC_ALL=$locale");
 	setlocale(LC_ALL, $locale);

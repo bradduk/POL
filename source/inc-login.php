@@ -64,7 +64,7 @@ if (isset($_COOKIE['teorizauser'])) {
 if (isset($pol['user_ID'])) {
 
 	// LOAD: $pol
-	$result = sql("SELECT lang, online, estado, pais, pols, partido_afiliado, bando, fecha_last, fecha_registro, nivel, fecha_init, cargo, cargos, examenes, fecha_legal, dnie, SC, IP, grupos, socio
+	$result = sql("SELECT lang, online, estado, pais, pols, partido_afiliado, bando, fecha_last, fecha_registro, nivel, fecha_init, cargo, cargos, examenes, fecha_legal, dnie, SC, IP, grupos, socio, energia 
 FROM users WHERE ID = '".$pol['user_ID']."' LIMIT 1");
 	while($r = r($result)) {
 		$pol['pols'] = $r['pols'];
@@ -80,6 +80,7 @@ FROM users WHERE ID = '".$pol['user_ID']."' LIMIT 1");
 		$pol['grupos'] = $r['grupos'];
 		$fecha_init = $r['fecha_init'];
 		$fecha_last = $r['fecha_last'];
+		$pol['energia'] = $r['energia'];
 		
 		if ((isset($r['lang'])) AND ($_SERVER['REQUEST_URI'] != '/accion.php')) { $pol['config']['lang'] = $r['lang']; }
 
@@ -95,6 +96,7 @@ FROM users WHERE ID = '".$pol['user_ID']."' LIMIT 1");
 		$_SESSION['pol']['partido_afiliado'] = $r['partido_afiliado'];
 		$_SESSION['pol']['pols'] = $r['pols'];
 		$_SESSION['pol']['grupos'] = $r['grupos'];
+		$_SESSION['pol']['energia'] = $r['energia'];
 
 		if (($r['pais'] != PAIS) AND ($pol['estado'] == 'ciudadano')) { 
 			// es extranjero

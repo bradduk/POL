@@ -95,4 +95,5 @@ if ($_SERVER['HTTPS']) {
 	define('IMG', 'http://www.'.DOMAIN.'/img/'); // Archivos estaticos
 }
 
-define('MONEDA', '<img src="'.IMG.'varios/m.gif" />'); 
+define('MONEDA', '<img src="'.IMG.'varios/m.gif" />');
+define('ENERGIA', '<img src="'.IMG.'varios/bateria.png" />'); 
