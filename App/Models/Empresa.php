@@ -31,7 +31,7 @@ class Empresa extends Eloquent
 
     public function soyEmpleado($user_ID)
     {
-        return $this->empleados()->where(['user_ID' => $user_ID ])->get();
+        return $this->empleados()->where(['user_ID' => $user_ID ])->first();
     }
 
 }

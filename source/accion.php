@@ -1192,8 +1192,13 @@ WHERE pais = '".PAIS."' AND ID = '".$_GET['ID']."' AND user_ID = '".$pol['user_I
 	} elseif (($_GET['b'] == 'eliminar') AND ($_GET['ID'])) {
 		sql("DELETE FROM empresas WHERE pais = '".PAIS."' AND ID = '".$_GET['ID']."' AND user_ID = '".$pol['user_ID']."' LIMIT 1");
 		evento_log('Empresa eliminada #'.$_GET['ID']);
-	}elseif($_GET['b'] == 'trabajar' AND ($_GET['ID']) ){
-		print_r('TRABAJEMOS'); die();
+	} elseif($_GET['b'] == 'trabajar' AND ($_GET['ID']) ){
+		
+		// Se incluye de esta manera porque solo se usará aqui
+		$empresaController = new App\Controllers\EmpresaController($pol);
+		$empresaController->accionTrabajar($_GET['ID']);
+		
+		
 	}
 	$refer_url = 'empresas/'.$return;
 	break;

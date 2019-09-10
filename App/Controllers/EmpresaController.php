@@ -6,6 +6,7 @@ use App\Models\Category;
 use Jenssegers\Blade\Blade;
 use App\Models\Empresa;
 use App\Models\User;
+use App\Models\EmpresaTrabajo;
 
 const TIPO_CATEGORY = 'empresas';
 const TIPO_CATEGORY_PRO = 'empresas-pro';
@@ -135,6 +136,73 @@ class EmpresaController
             'empresa' => $empresa,
             'pols_empresa' => $this->pol['config']['pols_empresa']
         ]);
+    }
+
+
+
+    /**
+     * ACCIONES NUEVAS
+     */
+
+
+    /**
+     * Funcion de trabajar para empleados
+     */
+
+    public function accionTrabajar($empresa_ID)
+    {
+        
+        $empresa = Empresa::find($empresa_ID);
+
+        $trabajador = $empresa->soyEmpleado($this->pol['user_ID']);
+
+        // yo trabajo para la empresa?
+        if($trabajador){
+            
+            // tengo energia para trabajar?
+            if($trabajador->user->energia > ENERGIA_TRABAJAR){
+
+                // la empresa tiene fondos para pagar ?
+                if($empresa->cuenta->pols >= $trabajador->sueldo ){
+
+                    // Trabajar
+
+                    $impuesto_trabajo = $this->pol['config']['impuestos_trabajo'];
+
+
+                    $empresaTrabajo = new EmpresaTrabajo();
+                    $empresaTrabajo->user_ID = $trabajador->user_ID;
+                    $empresaTrabajo->empresa_ID = $empresa_ID;
+                    $empresaTrabajo->salario_bruto = $trabajador->sueldo;
+                    $empresaTrabajo->salario_neto = $trabajador->sueldo * ( (100-$impuesto_trabajo)/100 );
+                    $empresaTrabajo->salario_impuesto = $trabajador->sueldo * ($impuesto_trabajo/100);
+                    $empresaTrabajo->recursos_generados = RECURSOS_TRABAJO;
+                    $empresaTrabajo->fecha = date('Y-m-d H:i:s');
+                    $empresaTrabajo->save();
+
+
+
+                }
+
+            }
+
+
+        }else{
+            
+        }
+
+        print_r($this->pol['config']['impuestos_trabajo'] ); die();
+
+        
+
+        
+
+
+        // trabajemos
+
+
+
+
     }
 
 

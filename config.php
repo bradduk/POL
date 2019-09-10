@@ -80,6 +80,7 @@ define('SC_NUM', 3); // Numero de SC electos.
 define('MP_MAX', 25); // Máximo de MP (mensajes privados) que puede enviar un ciudadano
 define('VER', 13); // Version de archivos estaticos. Util para forzar el refresco de js y css. Incrementar.
 define('ENERGIA_TRABAJAR', 10); // Cantidad de eneria que se pierde al trabajar.
+define('RECURSOS_TRABAJO', 100); // Cantidad de recursos generados por el empleado al trabajar.
 $datos_perfil = array('Blog', 'Twitter', 'Facebook', '', 'Menéame');
 
 $columnas = 14; $filas = 14; // Dimensiones mapa
