@@ -51,81 +51,62 @@ if ((nucleo_acceso($vp['acceso']['kick'])) AND ($pol['pais'] == PAIS)) {
 
 
 echo  '
-<div id="vp_c">
+<div class="row h-100 mh-100">
+	<h1 style="margin:0 0 18px 0;">';
 
-<h1 style="margin:0 0 18px 0;">';
-
-if ($externo) {
-	if ($_SESSION['pol']['user_ID']) {
-		echo  '<span style="float:right;"><a href="/">'._('Volver').'</a></span>'.$titulo;
+	if ($externo) {
+		if ($_SESSION['pol']['user_ID']) {
+			echo  '<span style="float:right;"><a href="/">'._('Volver').'</a></span>'.$titulo;
+		} else {
+			echo  '<span style="float:right;"><a href="/registrar">'._('Crear ciudadano').'</a></span>'.$titulo;
+		}
 	} else {
-		echo  '<span style="float:right;"><a href="/registrar">'._('Crear ciudadano').'</a></span>'.$titulo;
+		echo  '<span class="quitar"><span style="float:right;">[<a href="/chat/opciones/'.$_GET[1].'">'._('Opciones').'</a>] [<a href="/chat/log/'.$_GET[1].'">'._('Log').'</a>]</span><a href="/chat">'._('Chat').'</a>: '.$titulo.'</span>';
 	}
-} else {
-	echo  '<span class="quitar"><span style="float:right;">[<a href="/chat/opciones/'.$_GET[1].'">'._('Opciones').'</a>] [<a href="/chat/log/'.$_GET[1].'">'._('Log').'</a>]</span><a href="/chat">'._('Chat').'</a>: '.$titulo.'</span>';
-}
 
-$a_leer = nucleo_acceso($acceso_leer, $acceso_cfg_leer);
-$a_escribir = nucleo_acceso($acceso_escribir, $acceso_cfg_escribir);
-$a_escribir_ex = nucleo_acceso($acceso_escribir_ex, $acceso_cfg_escribir_ex);
+	$a_leer = nucleo_acceso($acceso_leer, $acceso_cfg_leer);
+	$a_escribir = nucleo_acceso($acceso_escribir, $acceso_cfg_escribir);
+	$a_escribir_ex = nucleo_acceso($acceso_escribir_ex, $acceso_cfg_escribir_ex);
 
-echo  '</h1>
+	echo  '</h1>
 
-<div id="vpc_u">
-<ul id="chat_list">
-</ul>
-</div>
+	<div class="col-sm-12">
+		<div class="row" id="chat" >
+			<ul id="vpc_ul" class="list-group list-group-flush overflow-auto content w-100">
+				<li class="list-group-item" style="color:#666;">
+					<img src="'.IMG.'logo/vp2.png" alt="VirtualPol" width="200" height="60" /><br />
+					<span style="float:right;">'.date('Y-m-d H:i').' &nbsp;</span>
+					Chat de '.PAIS.': <b>'.$titulo.'</b><br />
 
-<div id="vpc_fondo">
-<div id="vpc">
-<ul id="vpc_ul">
-<li style="margin-top:600px;color:#666;">
-<img src="'.IMG.'logo/vp2.png" alt="VirtualPol" width="200" height="60" /><br />
-<span style="float:right;">'.date('Y-m-d H:i').' &nbsp;</span>
-Chat de '.PAIS.': <b>'.$titulo.'</b><br />
+					<table>
+					<tr>
+					<td align="right">'._('Acceso leer').':</td>
+					<td><b style="color:'.($a_leer?'blue;">'._('SI'):'red;">'._('NO')).'</b>. '.ucfirst(verbalizar_acceso($acceso_leer, $acceso_cfg_leer)).'</td>
+					</tr>
 
-<table>
-<tr>
-<td align="right">'._('Acceso leer').':</td>
-<td><b style="color:'.($a_leer?'blue;">'._('SI'):'red;">'._('NO')).'</b>. '.ucfirst(verbalizar_acceso($acceso_leer, $acceso_cfg_leer)).'</td>
-</tr>
+					<tr>
+					<td align="right">'._('Acceso escribir').':</td>
+					'.($pol['estado']=='extranjero'?'<td><b style="color:'.($a_escribir_ex?'blue;">'._('SI'):'red;">'._('NO')).'</b>. '.ucfirst(verbalizar_acceso($acceso_escribir_ex, $acceso_cfg_escribir_ex)).'</td>':'<td><b style="color:'.($a_escribir?'blue;">'._('SI'):'red;">'._('NO')).'</b>. '.ucfirst(verbalizar_acceso($acceso_escribir, $acceso_cfg_escribir)).'</td>').'
+					</tr>
 
-<tr>
-<td align="right">'._('Acceso escribir').':</td>
-'.($pol['estado']=='extranjero'?'<td><b style="color:'.($a_escribir_ex?'blue;">'._('SI'):'red;">'._('NO')).'</b>. '.ucfirst(verbalizar_acceso($acceso_escribir_ex, $acceso_cfg_escribir_ex)).'</td>':'<td><b style="color:'.($a_escribir?'blue;">'._('SI'):'red;">'._('NO')).'</b>. '.ucfirst(verbalizar_acceso($acceso_escribir, $acceso_cfg_escribir)).'</td>').'
-</tr>
+					</table>
 
-</table>
+					<hr />
 
-<hr />
-
-</li>
-</ul>
-</div>
-</div>
-
-
-</div>
-
-<div id="chatform">
-<form method="POST" onSubmit="return enviarmsg();">
-
-<div class="envio_mensaje_container">
-	<div class="refrescar_evento"><img id="vpc_actividad" onclick="actualizar_ahora();" src="'.IMG.'ico/punto_gris.png" width="16" height="16" title="Actualizar chat" style="margin-top:4px;" /></div>
-
-	<div class="cuadro_mensaje">
-	'.(isset($pol['user_ID'])?'
-	<input type="text" id="vpc_msg" name="msg" onKeyUp="msgkeyup(event,this);" onKeyDown="msgkeydown(event,this);" tabindex="1" autocomplete="off" size="65" maxlength="250" style="margin-left:0;width:98%; height: 32px; " autofocus="autofocus" value="" required />':'&nbsp;').'
+				</li>
+			</ul>
+		</div>
+		<form method="POST" onSubmit="return enviarmsg();">
+		<div class="row align-items-end ">			
+					<div class="col-sm-12">
+					'.(isset($pol['user_ID'])?'
+					<input type="text" id="vpc_msg" name="msg" onKeyUp="msgkeyup(event,this);" onKeyDown="msgkeydown(event,this);" tabindex="1" autocomplete="off" maxlength="250" style="margin-left:0;width:98%; height: 32px; " autofocus="autofocus" value="" required />':'&nbsp;').'
+					</div>		
+		</div>
+		</form>
 	</div>
-
-	<div class="ocultar_evento">&nbsp;&nbsp; <input id="cfilter" name="cfilter" value="1" type="checkbox" OnClick="chat_filtro_change(chat_filtro);" /> <label for="cfilter" class="inline">'._('Ocultar eventos').'</label></div>
-
-	<div class="enviar_mensaje">'.boton(_('Enviar'), 'submit', false, '', '', ' id="botonenviar"').'</div>
 </div>
-
-</form>
-
-</div>';
+';
 
 
 
