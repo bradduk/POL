@@ -153,7 +153,7 @@ UPDATE chats SET stats_msgs = stats_msgs + 1 WHERE chat_ID = '".$chat_ID."' LIMI
 
     
     if (isset($_POST['n'])) 
-        echo json_encode(chat_refresh($chat_ID, $_POST['n'])); 
+        echo chat_refresh($chat_ID, $_POST['n']); 
 
 } else { 
     echo 'n 0 &nbsp; &nbsp; <b style="color:#FF0000;">No tienes permiso de escritura.</b>'."\n"; 

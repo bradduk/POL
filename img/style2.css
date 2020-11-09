@@ -34,7 +34,9 @@ body {
 }
 
 #header {
+	height:99px;
 	border-bottom:1px solid #CCC;
+	/*box-shadow:inset -6px -6px 15px #F5F5F5;*/
 }
 #header-logo {
 	position:absolute;
