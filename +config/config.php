@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL ^ E_NOTICE);
 
 
-$maxsim['output'] = 'template';
+$maxsim['output'] = 'template_kendel';
 
 
 // INICIALIZACION

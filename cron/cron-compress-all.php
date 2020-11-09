@@ -34,8 +34,6 @@ function compress_file($file, $tipo='js') {
 		case 'js': $result = minify_js($result);  break;
 		case 'css': 
 			$result = minify_css($result); 
-			$result = str_replace('url(img/', 'url(lib/kickstart/css/img/', $result); /* corrige URLs de kickstart (codigo malo) */
-			$result = str_replace('url(\'img/', 'url(\'lib/kickstart/css/img/', $result); /* corrige URLs de kickstart (codigo malo) */
 			break;
 	}
 	$len_ahora = strlen($result);
@@ -48,27 +46,14 @@ function compress_file($file, $tipo='js') {
 echo '<h2>Minify CSS</h2>
 
 <table>';
-$txt_css .= compress_file('lib/kickstart/css/kickstart.css', 'css');
-$txt_css .= compress_file('lib/kickstart/css/kickstart-buttons.css', 'css');
-$txt_css .= compress_file('lib/kickstart/css/kickstart-forms.css', 'css');
-$txt_css .= compress_file('lib/kickstart/css/kickstart-menus.css', 'css');
-$txt_css .= compress_file('lib/kickstart/css/kickstart-grid.css', 'css');
-$txt_css .= compress_file('lib/kickstart/css/kickstart-icons.css', 'css');
-$txt_css .= compress_file('lib/kickstart/css/jquery.fancybox-1.3.4.css', 'css');
-$txt_css .= compress_file('lib/kickstart/css/prettify.css', 'css');
-$txt_css .= compress_file('lib/kickstart/css/chosen.css', 'css');
-$txt_css .= compress_file('lib/kickstart/css/tiptip.css', 'css');
 $txt_css .= compress_file('style2.css', 'css');
-//////////////// file_put_contents('img/style_all.css', $txt_css);
+file_put_contents('img/style_all.css', $txt_css);
 echo '</table>';
 
 echo '<h2>Minify JS</h2>
 
 <table>';
 
-
-$txt_js .= compress_file('lib/kickstart/js/prettify.js', 'js');
-$txt_js .= compress_file('lib/kickstart/js/kickstart.js', 'js');
 $txt_js .= compress_file('scripts2.js', 'js');
 
 
@@ -80,7 +65,7 @@ foreach (array('Ahora', 'ahora', 'años', 'meses','días','horas','minutos','min
 $txt_js .= '};';
 //$txt_js .= 'ACCION_URL = "/accion/";';
 
-//////////////// file_put_contents('img/scripts_all.js', $txt_js);
+file_put_contents('img/scripts_all.js', $txt_js);
 echo '</table>';
 
 

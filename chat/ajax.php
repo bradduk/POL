@@ -6,4 +6,4 @@
 $maxsim['output'] = 'text';
 
 if (is_numeric($_POST['chat_ID']) AND is_numeric($_POST['n']))
-	echo chat_refresh($_POST['chat_ID'], $_POST['n']);
+	echo json_encode(chat_refresh($_POST['chat_ID'], $_POST['n']));
