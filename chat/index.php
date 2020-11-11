@@ -51,18 +51,53 @@ if ((nucleo_acceso($vp['acceso']['kick'])) AND ($pol['pais'] == PAIS)) {
 
 
 echo  '
-<div class="row h-100 mh-100">
-	<h1 style="margin:0 0 18px 0;">';
+<div id="vp_c">
 
-	if ($externo) {
-		if ($_SESSION['pol']['user_ID']) {
-			echo  '<span style="float:right;"><a href="/">'._('Volver').'</a></span>'.$titulo;
-		} else {
-			echo  '<span style="float:right;"><a href="/registrar">'._('Crear ciudadano').'</a></span>'.$titulo;
-		}
+<h1 style="margin:0 0 18px 0;">';
+
+if ($externo) {
+	if ($_SESSION['pol']['user_ID']) {
+		echo  '<span style="float:right;"><a href="/">'._('Volver').'</a></span>'.$titulo;
 	} else {
-		echo  '<span class="quitar"><span style="float:right;">[<a href="/chat/opciones/'.$_GET[1].'">'._('Opciones').'</a>] [<a href="/chat/log/'.$_GET[1].'">'._('Log').'</a>]</span><a href="/chat">'._('Chat').'</a>: '.$titulo.'</span>';
+		echo  '<span style="float:right;"><a href="/registrar">'._('Crear ciudadano').'</a></span>'.$titulo;
 	}
+} else {
+	echo  '<span class="quitar"><span style="float:right;">[<a href="/chat/opciones/'.$_GET[1].'">'._('Opciones').'</a>] [<a href="/chat/log/'.$_GET[1].'">'._('Log').'</a>]</span><a href="/chat">'._('Chat').'</a>: '.$titulo.'</span>';
+}
+
+$a_leer = nucleo_acceso($acceso_leer, $acceso_cfg_leer);
+$a_escribir = nucleo_acceso($acceso_escribir, $acceso_cfg_escribir);
+$a_escribir_ex = nucleo_acceso($acceso_escribir_ex, $acceso_cfg_escribir_ex);
+
+echo  '</h1>
+
+<div id="vpc_u">
+<ul id="chat_list">
+</ul>
+</div>
+
+<div id="vpc_fondo">
+<div id="vpc">
+<ul id="vpc_ul">
+<li style="margin-top:600px;color:#666;">
+<img src="'.IMG.'logo/vp2.png" alt="VirtualPol" width="200" height="60" /><br />
+<span style="float:right;">'.date('Y-m-d H:i').' &nbsp;</span>
+Chat de '.PAIS.': <b>'.$titulo.'</b><br />
+
+<table>
+<tr>
+<td align="right">'._('Acceso leer').':</td>
+<td><b style="color:'.($a_leer?'blue;">'._('SI'):'red;">'._('NO')).'</b>. '.ucfirst(verbalizar_acceso($acceso_leer, $acceso_cfg_leer)).'</td>
+</tr>
+
+<tr>
+<td align="right">'._('Acceso escribir').':</td>
+'.($pol['estado']=='extranjero'?'<td><b style="color:'.($a_escribir_ex?'blue;">'._('SI'):'red;">'._('NO')).'</b>. '.ucfirst(verbalizar_acceso($acceso_escribir_ex, $acceso_cfg_escribir_ex)).'</td>':'<td><b style="color:'.($a_escribir?'blue;">'._('SI'):'red;">'._('NO')).'</b>. '.ucfirst(verbalizar_acceso($acceso_escribir, $acceso_cfg_escribir)).'</td>').'
+</tr>
+
+</table>
+
+<hr />
 
 </li>
 </ul>
