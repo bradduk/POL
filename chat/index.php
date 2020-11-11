@@ -108,9 +108,12 @@ Chat de '.PAIS.': <b>'.$titulo.'</b><br />
 </div>
 
 <div id="chatform">
+<<<<<<< HEAD
 <script src="https://cdn.jsdelivr.net/npm/vanilla-emoji-picker@0.2.4/dist/emojiPicker.min.js" integrity="sha256-CGZfzJG8PYLv+QiLYG/zei0ip0BBULUWESDr7VvdMiY=" crossorigin="anonymous"></script>
 
 
+=======
+>>>>>>> parent of 2e58447... WIP - Template modificado, chat modificado de forma basica
 <form method="POST" onSubmit="return enviarmsg();">
 
 <div class="envio_mensaje_container">
@@ -118,18 +121,28 @@ Chat de '.PAIS.': <b>'.$titulo.'</b><br />
 
 	<div class="cuadro_mensaje">
 	'.(isset($pol['user_ID'])?'
+<<<<<<< HEAD
 	<input type="text"  data-emoji-picker="true" id="vpc_msg" name="msg" onKeyUp="msgkeyup(event,this);" onKeyDown="msgkeydown(event,this);" tabindex="1" autocomplete="off" size="65" maxlength="250" style="margin-left:0;width:98%; height: 32px; " autofocus="autofocus" value="" required />':'&nbsp;').'
 	</div>
+=======
+	<input type="text" id="vpc_msg" name="msg" onKeyUp="msgkeyup(event,this);" onKeyDown="msgkeydown(event,this);" tabindex="1" autocomplete="off" size="65" maxlength="250" style="margin-left:0;width:98%; height: 32px; " autofocus="autofocus" value="" required />':'&nbsp;').'
+	</div>
+
+>>>>>>> parent of 2e58447... WIP - Template modificado, chat modificado de forma basica
 	<div class="ocultar_evento">&nbsp;&nbsp; <input id="cfilter" name="cfilter" value="1" type="checkbox" OnClick="chat_filtro_change(chat_filtro);" /> <label for="cfilter" class="inline">'._('Ocultar eventos').'</label></div>
 
 	<div class="enviar_mensaje">'.boton(_('Enviar'), 'submit', false, '', '', ' id="botonenviar"').'</div>
 </div>
 
 </form>
+<<<<<<< HEAD
 <script>
 new EmojiPicker();
 
 </script>
+=======
+
+>>>>>>> parent of 2e58447... WIP - Template modificado, chat modificado de forma basica
 </div>';
 
 
