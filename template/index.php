@@ -93,6 +93,7 @@ foreach ((array)$maxsim['template']['js_array'] AS $key => $value)
 				</ul>
 			</li>
 			<li><a href="/msg"><?=_('Mensajes privados')?></a></li>
+			<li><a href="/notas"><?=_('Notas')?></a></li>
 		</ul>
 	</li>
 
