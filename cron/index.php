@@ -1,9 +1,9 @@
 <?php # POL.VirtualPol.com — Copyright (c) 2008 Javier González González <gonzo@virtualpol.com> — MIT License 
 
-
+/*
 if ($_SERVER['SERVER_ADDR'] !== $_SERVER['REMOTE_ADDR'])
 	exit('Solo el propio servidor puede ejecutar "el proceso".');
-
+*/
 
 unset($maxsim['output']);
 
