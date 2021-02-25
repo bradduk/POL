@@ -10,6 +10,7 @@ services:
       DATABASE: "mysql://virtualpol:virtualpol@mysql:3306/virtualpol"
       COOKIE_KEY: 123456
       SHA_KEY: 123456
+      TZ: "Europe/Madrid"
     links:
       - mysql
     volumes: 
@@ -24,6 +25,7 @@ services:
       MYSQL_USER: virtualpol
       MYSQL_PASSWORD: virtualpol
       MYSQL_ROOT_PASSWORD: virtualpol
+      TZ: "Europe/Madrid"
     ports:
       - "3306:3306"
     restart: always

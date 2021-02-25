@@ -823,7 +823,7 @@ function print_msg(data){
                         var vpc_yo = "";
                         if (minick == m_nick){ var vpc_yo = " class=\"vpc_yo\""; }
                         if (m_tipo.substr(0, 3)== "98_"){ var cargo_ID = 98; } else { var cargo_ID = m_tipo; }
-                        list += "<li id=\"" + m_ID + "\" class=\"" + m_nick + "\">" + m_time + " <img src=\"" + IMG + "cargos/" + cargo_ID + ".gif\" width=\"16\" height=\"16\" title=\"" + array_cargos[cargo_ID] + "\" /> <b" + vpc_yo + " OnClick=\"auto_priv(\'" + m_nick + "\');\">" + m_nick + "</b>: " + txt + "</li>\n";
+                        list += "<li  ontouchend=\"editMessage('" + m_ID+ "', '"+txt+"', '"+mli[2]+"')\"  ondblclick=\"editMessage('" + m_ID+ "', '"+txt+"', '"+mli[2]+"')\" id=\"" + m_ID + "\" class=\"" + m_nick + "\">" + m_time + " <img src=\"" + IMG + "cargos/" + cargo_ID + ".gif\" width=\"16\" height=\"16\" title=\"" + array_cargos[cargo_ID] + "\" /> <b" + vpc_yo + " OnClick=\"auto_priv(\'" + m_nick + "\');\">" + m_nick + "</b>: <span id=\"txt_"+m_ID+"\"> " + txt + "</span></li>\n";
                 }
 
                 if (((msg_num - 1)== i)&& (msg_num != "n")&& (m_nick != "&nbsp;")){ msg_ID = m_ID; }
@@ -846,6 +846,50 @@ function print_msg(data){
         }
         for (var i = 0; i < escondidos.length; i++){ $("#" + escondidos[i]).hide(); }
     }
+}
+
+function editMessage(messageId, text, messageTime){
+    messageDate = new Date(Date.prototype.setHours.apply(new Date(), messageTime.split(':')));
+    actualDate = new Date();
+    if (actualDate - messageDate > 0.5 * 1000 * 60){
+        console.log("Mensaje demasiado antiguo para editar");
+    }
+    console.log("Editando ", messageId, text, messageTime);
+
+    var input = $("<input/>", {
+        type: "text",
+        class: "form-control",
+        id: "input_txt_"+messageId,
+        value: text
+      });
+
+    input.attr("messageId", messageId);
+
+    $("#txt_"+messageId).replaceWith(input);
+
+    input.keydown(function( event ) {
+        if ( event.which == 13 ) {
+         event.preventDefault();
+
+         updateChatMessage(event.srcElement.attributes.messageId.value, event.srcElement.value)
+        }
+      });
+}
+
+function updateChatMessage(messageId, newText){
+    var data = {
+        messageId: messageId, 
+        newText: newText
+    }
+    fetch('/chat/actualizar-mensaje', {
+        method: 'POST', // or 'PUT'
+        body: data, // data can be `string` or {object}!
+        headers:{
+            'Content-Type': 'application/json'
+        }
+        }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => console.log('Success:', response));
 }
 
 function merge_list(){
