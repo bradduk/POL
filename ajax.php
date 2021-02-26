@@ -11,6 +11,8 @@ if ($_GET[1]=='new-commit') {
 if ($_GET['a'] == 'noti') {
     $pol['nick'] = $_SESSION['pol']['nick'];
 	$pol['user_ID'] = $_SESSION['pol']['user_ID'];
+
+	comprobar_mensajes_foro_programados();
 ?>
 <script type="text/javascript">
 $('ul.menu').each(function(){ $(this).find('li').has('ul').addClass('has-menu').append('<span class="arrow">&nbsp;</span>'); });

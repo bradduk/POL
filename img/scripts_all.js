@@ -534,7 +534,7 @@ $(document).ready(function(){
         function(){ $(".ayudap").remove(); }
 );
 
-    setInterval("actualizar_noti()", 180000); // Actualiza notificaciones cada 3 min.
+    setInterval("actualizar_noti()", 60000); // Actualiza notificaciones cada minuto.
 });
 
 
@@ -768,12 +768,13 @@ function print_msg(data){
             var mli = arraydata[i].split(" ");
             var txt = "";
             var ml = mli.length;
-            for (var e = 4; e < ml; e++){ txt += mli[e] + " "; }
+            for (var e = 5; e < ml; e++){ txt += mli[e] + " "; }
 
             var m_ID = mli[0];
             var m_tipo = mli[1];
             var m_time = mli[2];
             var m_nick = mli[3];
+            var m_modificado = mli[4]==1?true:false;
 
             if (!chat_msg_ID[m_ID]){
 
@@ -821,9 +822,14 @@ function print_msg(data){
                         }
 
                         var vpc_yo = "";
-                        if (minick == m_nick){ var vpc_yo = " class=\"vpc_yo\""; }
+                        var editMessage = "";
+                        if (minick == m_nick){ 
+                            var vpc_yo = " class=\"vpc_yo\""; 
+                            var editMessage = "ontouchend=\"editMessage('" + m_ID+ "', '"+txt+"', '"+mli[2]+"')\"  ondblclick=\"editMessage('" + m_ID+ "', '"+txt+"', '"+mli[2]+"')\"";
+                        }
+                        
                         if (m_tipo.substr(0, 3)== "98_"){ var cargo_ID = 98; } else { var cargo_ID = m_tipo; }
-                        list += "<li  ontouchend=\"editMessage('" + m_ID+ "', '"+txt+"', '"+mli[2]+"')\"  ondblclick=\"editMessage('" + m_ID+ "', '"+txt+"', '"+mli[2]+"')\" id=\"" + m_ID + "\" class=\"" + m_nick + "\">" + m_time + " <img src=\"" + IMG + "cargos/" + cargo_ID + ".gif\" width=\"16\" height=\"16\" title=\"" + array_cargos[cargo_ID] + "\" /> <b" + vpc_yo + " OnClick=\"auto_priv(\'" + m_nick + "\');\">" + m_nick + "</b>: <span id=\"txt_"+m_ID+"\"> " + txt + "</span></li>\n";
+                        list += "<li "+editMessage+" id=\"" + m_ID + "\" class=\"" + m_nick + "\">" + m_time + " <img src=\"" + IMG + "cargos/" + cargo_ID + ".gif\" width=\"16\" height=\"16\" title=\"" + array_cargos[cargo_ID] + "\" /> <b" + vpc_yo + " OnClick=\"auto_priv(\'" + m_nick + "\');\"><span id=\"nick_"+m_ID+"\">" + (m_modificado?"<span onclick='showMsgLog(\""+m_ID+"\")'>*</span> ":"") + m_nick + "<span></b>: <span id=\"txt_"+m_ID+"\"> " + txt + "</span></li>\n";
                 }
 
                 if (((msg_num - 1)== i)&& (msg_num != "n")&& (m_nick != "&nbsp;")){ msg_ID = m_ID; }
@@ -834,6 +840,9 @@ function print_msg(data){
 
                 var idx = $.inArray(m_nick, array_ignorados);
                 if (idx != -1){ escondidos.push(m_ID); } else { chat_sin_leer++; }
+            }else if (m_modificado){
+                $("#txt_"+m_ID).html(txt);
+                $("#nick_"+m_ID).html("<span onclick='showMsgLog(\""+m_ID+"\")'>*</span> "+m_nick);
             }
         }
 
@@ -848,6 +857,24 @@ function print_msg(data){
     }
 }
 
+function showMsgLog(messageId){
+    fetch('/chat/actualizar-mensaje/log?ID='+messageId, {
+        method: 'GET', // or 'PUT'
+        headers:{
+            'Content-Type': 'application/json'
+        }
+        }).then(res => res.json())
+        .catch(error => console.error('Error:', error))
+        .then(response => {
+                var listaMensajes = $("<ul/>");
+                listaMensajes.html(response.map(e => e.msg).join('\n'));
+                alert(listaMensajes.html());
+        });
+}
+
+var editingMessageId = "";
+var editingOriginalText = "";
+
 function editMessage(messageId, text, messageTime){
     messageDate = new Date(Date.prototype.setHours.apply(new Date(), messageTime.split(':')));
     actualDate = new Date();
@@ -856,12 +883,23 @@ function editMessage(messageId, text, messageTime){
     }
     console.log("Editando ", messageId, text, messageTime);
 
+    if (editingMessageId != ""){
+        var span = $("<span/>", {
+            id: "txt_"+editingMessageId
+            }).html(editingOriginalText);
+        
+        $("#input_txt_"+editingMessageId).replaceWith(span);
+    }
+
     var input = $("<input/>", {
         type: "text",
         class: "form-control",
         id: "input_txt_"+messageId,
         value: text
       });
+
+    editingMessageId = messageId;
+    editingOriginalText = text;
 
     input.attr("messageId", messageId);
 
@@ -879,17 +917,27 @@ function editMessage(messageId, text, messageTime){
 function updateChatMessage(messageId, newText){
     var data = {
         messageId: messageId, 
-        newText: newText
+        text: newText
     }
-    fetch('/chat/actualizar-mensaje', {
-        method: 'POST', // or 'PUT'
-        body: data, // data can be `string` or {object}!
-        headers:{
-            'Content-Type': 'application/json'
-        }
-        }).then(res => res.json())
-        .catch(error => console.error('Error:', error))
-        .then(response => console.log('Success:', response));
+
+    if (newText != editingOriginalText){
+        fetch('/chat/actualizar-mensaje', {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers:{
+                'Content-Type': 'application/json'
+            }
+            }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response));
+    }
+
+    var span = $("<span/>", {
+        id: "txt_"+messageId
+        }).html(newText);
+    
+    $("#input_txt_"+messageId).replaceWith(span);
+    editingMessageId = "";
 }
 
 function merge_list(){
