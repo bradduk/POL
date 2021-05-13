@@ -87,7 +87,7 @@ ORDER BY nivel DESC", $link);
 
 		if (!$hilo) { 
 			if ($edit) { $get = 'editar'; } else { $get = 'hilo'; } 
-
+			
 			$html .= '<div id="enviar" class="redondeado">
 
 <hr />
@@ -170,6 +170,15 @@ if (($edit AND $fecha_programado != 0) OR (!$edit)){
 		</span>
 	</div>';
 }
+$html .='
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/default.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/sceditor.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/formats/bbcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/languages/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/minified/plugins/autosave.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/minified/plugins/autoyoutube.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/minified/plugins/dragdrop.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/minified/plugins/undo.js"></script>';
 $html .='</div>
 <p'.($edit&&$edit_user_ID!=$pol['user_ID']?' style="display:none;"':'').'>Mensaje:<br />
 
@@ -218,6 +227,15 @@ $html .='</div>
 </div>';
 		} else {
 			if ($edit) { $get = 'editar'; } else { $get = 'reply'; } 
+			$html .='
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/default.min.css" />
+			<script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/sceditor.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/sceditor@3/minified/formats/bbcode.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/languages/es.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/minified/plugins/autosave.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/minified/plugins/autoyoutube.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/minified/plugins/dragdrop.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/sceditor@3.0.0/minified/plugins/undo.js"></script>';
 			$html .= '<div id="enviar" class="redondeado">
 <form action="/accion/foro/' . $get . '" method="post">
 <input type="hidden" name="subforo" value="' . $subforo . '"  />
@@ -236,240 +254,248 @@ $html .='</div>
 
 </form>
 </div>
-<style>
-.sceditor-button-media div { background: url("/img/black_wo_text_16.png"); }
-</style>
-<script>
-
-function each(obj, fn) {
-	if (Array.isArray(obj) || "length" in obj && isNumber(obj.length)) {
-		for (var i = 0; i < obj.length; i++) {
-			fn(i, obj[i]);
+';
 		}
-	} else {
-		Object.keys(obj).forEach(function (key) {
-			fn(key, obj[key]);
-		});
-	}
-}
-
-var ELEMENT_NODE = 1;
-
-
-function is(node, selector) {
-	var result = false;
-
-	if (node && node.nodeType === ELEMENT_NODE) {
-		result = (node.matches || node.msMatchesSelector ||
-			node.webkitMatchesSelector).call(node, selector);
-	}
-
-	return result;
-}
-
-function on(node, events, selector, fn, capture) {
-	events.split(" ").forEach(function (event) {
-		var handler;
-
-		if (typeof selector === "string") {
-			handler = fn["_sce-event-" + event + selector] || function (e) {
-				var target = e.target;
-				while (target && target !== node) {
-					if (is(target, selector)) {
-						fn.call(target, e);
-						return;
-					}
-
-					target = target.parentNode;
+		$html .= '<style>
+		.sceditor-button-media div { background: url("/img/black_wo_text_16.png"); }
+		</style>
+		<script>
+		
+		function each(obj, fn) {
+			if (Array.isArray(obj) || "length" in obj && isNumber(obj.length)) {
+				for (var i = 0; i < obj.length; i++) {
+					fn(i, obj[i]);
 				}
-			};
-
-			fn["_sce-event-" + event + selector] = handler;
-		} else {
-			handler = selector;
-			capture = fn;
+			} else {
+				Object.keys(obj).forEach(function (key) {
+					fn(key, obj[key]);
+				});
+			}
 		}
-
-		node.addEventListener(event, handler, capture || false);
-	});
-}
-
-function createElement(tag, attributes, context) {
-	var node = (context || document).createElement(tag);
-
-	each(attributes || {}, function (key, value) {
-		if (key === "style") {
-			node.style.cssText = value;
-		} else if (key in node) {
-			node[key] = value;
-		} else {
-			node.setAttribute(key, value);
+		
+		var ELEMENT_NODE = 1;
+		
+		
+		function is(node, selector) {
+			var result = false;
+		
+			if (node && node.nodeType === ELEMENT_NODE) {
+				result = (node.matches || node.msMatchesSelector ||
+					node.webkitMatchesSelector).call(node, selector);
+			}
+		
+			return result;
 		}
-	});
-
-	return node;
-}
-
-function parseHTML(html, context) {
-	context = context || document;
-
-	var	ret = context.createDocumentFragment();
-	var tmp = createElement("div", {}, context);
-
-	tmp.innerHTML = html;
-
-	while (tmp.firstChild) {
-		ret.appendChild(tmp.firstChild);
-	}
-
-	return ret;
-}
-
-//Custom bbcodes
-
-//media
-var media = {
-    isSelfClosing: false,
-    isInline: true,
-    isHtmlInline: undefined,
-    allowedChildren: null,
-    allowsEmpty: false,
-    excludeClosing: false,
-    skipLastLineBreak: false,
-
-    breakBefore: false,
-    breakStart: false,
-    breakEnd: false,
-    breakAfter: false,
-
-	format: "[media]{0}[/media]",
-    html: "<iframe scrolling=\"no\" id=\"hearthis_at_track_4858628\" width=\"100%\" height=\"150\" src=\"{0}\" target=\"_blank\" ></a> <a href=\"https://hearthis.at/\" target=\"_blank\">hearthis.at</a></p></iframe>",
-
-    quoteType: sceditor.BBCodeParser.QuoteType.auto
-};
-
-sceditor.command.set("media", {
-	_dropDown: function (editor, caller, callback) {
-		var	content = document.createElement("div");
-
-		content.appendChild(parseHTML("<div><label for=\"link\">Media URL:</label> <input type=\"text\" id=\"link\" dir=\"ltr\" placeholder=\"https://\" /></div>	<div><input type=\"button\" class=\"button\" value=\"Insertar\" />	</div>"));
-
-		on(content, "click", ".button", function (e) {
-			var val = content.querySelectorAll("#link")[0].value;
-			callback(val);
-
-			editor.closeDropDown(true);
-			e.preventDefault();
-		});
-
-		editor.createDropDown(caller, "insertlink", content);
-	},
-	exec: function (btn) {
-		var editor = this;
-
-		sceditor.commands.media._dropDown(editor, btn, function (id) {
-			editor.wysiwygEditorInsertHtml(id);
-		});
-	},
-	tooltip: "Incrusta medios externos"
-});
-
-sceditor.formats.bbcode.set("media", media);
-
-var empresa = {
-    isSelfClosing: false,
-    isInline: true,
-    isHtmlInline: undefined,
-    allowedChildren: null,
-    allowsEmpty: false,
-    excludeClosing: false,
-    skipLastLineBreak: false,
-
-    breakBefore: false,
-    breakStart: false,
-    breakEnd: false,
-    breakAfter: false,
-
-	format: "[empresa]{0}[/empresa]",
-    quoteType: sceditor.BBCodeParser.QuoteType.auto
-};
-
-sceditor.formats.bbcode.set("empresa", empresa);
-
-
-var textarea = document.getElementById("message");
-sceditor.create(textarea, {
-	format: "bbcode",
-	locale: "es",
-	autofocus: "true",
-	plugins: "autosave, autoyoutube, dragdrop, undo",
-	emoticonsRoot: "https://cdn.jsdelivr.net/npm/sceditor@3.0.0/",
-	breakAfterBlock: "false",
-	toolbar: "bold,italic,underline,strike,subscript,superscript|left,center,right,justify|font,size,color,removeformat|cut,copy,pastetext|bulletlist,orderedlist,indent,outdent|table|code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|ltr,rtl|print,maximize,source|media",
-	style: "https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css",
-	dragdrop: {
-		// Array of allowed mime types or null to allow all
-		allowedTypes: ["image/jpeg", "image/png"],
-		// Function to return if a file is allowed or not,
-		// defaults to always returning true
-		isAllowed: function(file) {
-			return true;
-		},
-		// If to extract pasted files like images pasted as
-		// base64 encoded URIs. Defaults to true
-		handlePaste: true,
-		// Method that handles the files / uploading etc.
-		handleFile: function (file, createPlaceholder) {
-			// createPlaceholder function will insert a
-			// loading placeholder into the editor and
-			// return an object with inert(html) and
-			// cancel() methods
-	
-			// For example:
-			var placeholder = createPlaceholder();
-	
-			imgurUpload(file).then(function (url) {
-				// Replace the placeholder with the image HTML
-				placeholder.insert("<img src=\"\' + url + \'\" />");
-			}).catch(function () {
-				// Error so remove the placeholder
-				placeholder.cancel();
+		
+		function on(node, events, selector, fn, capture) {
+			events.split(" ").forEach(function (event) {
+				var handler;
+		
+				if (typeof selector === "string") {
+					handler = fn["_sce-event-" + event + selector] || function (e) {
+						var target = e.target;
+						while (target && target !== node) {
+							if (is(target, selector)) {
+								fn.call(target, e);
+								return;
+							}
+		
+							target = target.parentNode;
+						}
+					};
+		
+					fn["_sce-event-" + event + selector] = handler;
+				} else {
+					handler = selector;
+					capture = fn;
+				}
+		
+				node.addEventListener(event, handler, capture || false);
 			});
 		}
-	}
-});
-
-function imgurUpload(file) {
-	var headers = new Headers({
-		"authorization": "4871550b02396a4"
-	});
-
-	var form = new FormData();
-	form.append("image", file);
-
-	return fetch("https://api.imgur.com/3/image", {
-		method: "post",
-		headers: headers,
-		body: form
-	}).then(function (response) {
-		return response.json();
-	}).then(function (result) {
-		if (result.success) {
-			return result.data.link;
+		
+		function createElement(tag, attributes, context) {
+			var node = (context || document).createElement(tag);
+		
+			each(attributes || {}, function (key, value) {
+				if (key === "style") {
+					node.style.cssText = value;
+				} else if (key in node) {
+					node[key] = value;
+				} else {
+					node.setAttribute(key, value);
+				}
+			});
+		
+			return node;
 		}
-
-		throw "Upload error";
-	});
-}
-
-$(".mensaje_foro").each(function() {
-	console.log($(this).html());
-    var html = sceditor.instance(textarea).fromBBCode(($(this).html().replaceAll("<br>", "")), false);
-    $(this).html(html);
-	console.log(html);
-});
-</script>';
+		
+		function parseHTML(html, context) {
+			context = context || document;
+		
+			var	ret = context.createDocumentFragment();
+			var tmp = createElement("div", {}, context);
+		
+			tmp.innerHTML = html;
+		
+			while (tmp.firstChild) {
+				ret.appendChild(tmp.firstChild);
+			}
+		
+			return ret;
 		}
+		
+		//Custom bbcodes
+		
+		//media
+		var media = {
+			isSelfClosing: false,
+			isInline: true,
+			isHtmlInline: undefined,
+			allowedChildren: null,
+			allowsEmpty: false,
+			excludeClosing: false,
+			skipLastLineBreak: false,
+		
+			breakBefore: false,
+			breakStart: false,
+			breakEnd: false,
+			breakAfter: false,
+		
+			format: "[media]{0}[/media]",
+			html: "<iframe scrolling=\"no\" id=\"hearthis_at_track_4858628\" width=\"100%\" height=\"150\" src=\"{0}\" target=\"_blank\" ></a> <a href=\"https://hearthis.at/\" target=\"_blank\">hearthis.at</a></p></iframe>",
+		
+			quoteType: sceditor.BBCodeParser.QuoteType.auto
+		};
+		
+		sceditor.command.set("media", {
+			_dropDown: function (editor, caller, callback) {
+				var	content = document.createElement("div");
+		
+				content.appendChild(parseHTML("<div><label for=\"link\">Media URL:</label> <input type=\"text\" id=\"link\" dir=\"ltr\" placeholder=\"https://\" /></div>	<div><input type=\"button\" class=\"button\" value=\"Insertar\" />	</div>"));
+		
+				on(content, "click", ".button", function (e) {
+					var val = content.querySelectorAll("#link")[0].value;
+					callback(val);
+		
+					editor.closeDropDown(true);
+					e.preventDefault();
+				});
+		
+				editor.createDropDown(caller, "insertlink", content);
+			},
+			exec: function (btn) {
+				var editor = this;
+		
+				sceditor.commands.media._dropDown(editor, btn, function (id) {
+					editor.wysiwygEditorInsertHtml(id);
+				});
+			},
+			tooltip: "Incrusta medios externos"
+		});
+		
+		sceditor.formats.bbcode.set("media", media);
+		
+		var empresa = {
+			isSelfClosing: false,
+			isInline: true,
+			isHtmlInline: undefined,
+			allowedChildren: null,
+			allowsEmpty: false,
+			excludeClosing: false,
+			skipLastLineBreak: false,
+		
+			breakBefore: false,
+			breakStart: false,
+			breakEnd: false,
+			breakAfter: false,
+		
+			format: "[empresa]{0}[/empresa]",
+			quoteType: sceditor.BBCodeParser.QuoteType.auto
+		};
+		
+		sceditor.formats.bbcode.set("empresa", empresa);
+		
+		
+		var textarea = document.getElementById("message");
+		sceditor.create(textarea, {
+			format: "bbcode",
+			locale: "es",
+			autofocus: "true",
+			emoticonsEnabled: "true",
+			emoticonsCompat: "true",
+			plugins: "autosave, autoyoutube, dragdrop, undo",
+			emoticonsRoot: "https://cdn.jsdelivr.net/npm/sceditor@3.0.0/",
+			breakAfterBlock: "false",
+			toolbar: "bold,italic,underline,strike,subscript,superscript|left,center,right,justify|font,size,color,removeformat|cut,copy,pastetext|bulletlist,orderedlist,indent,outdent|table|code,quote|horizontalrule,image,email,link,unlink|emoticon,youtube,date,time|ltr,rtl|print,maximize,source|media",
+			style: "https://cdn.jsdelivr.net/npm/sceditor@3/minified/themes/content/default.min.css",
+			dragdrop: {
+				// Array of allowed mime types or null to allow all
+				allowedTypes: ["image/jpeg", "image/png"],
+				// Function to return if a file is allowed or not,
+				// defaults to always returning true
+				isAllowed: function(file) {
+					return true;
+				},
+				// If to extract pasted files like images pasted as
+				// base64 encoded URIs. Defaults to true
+				handlePaste: true,
+				// Method that handles the files / uploading etc.
+				handleFile: function (file, createPlaceholder) {
+					// createPlaceholder function will insert a
+					// loading placeholder into the editor and
+					// return an object with inert(html) and
+					// cancel() methods
+			
+					// For example:
+					var placeholder = createPlaceholder();
+			
+					imgurUpload(file).then(function (url) {
+						// Replace the placeholder with the image HTML
+						placeholder.insert("<img src=\"\' + url + \'\" />");
+					}).catch(function () {
+						// Error so remove the placeholder
+						placeholder.cancel();
+					});
+				}
+			}
+		});
+		
+		function imgurUpload(file) {
+			var headers = new Headers({
+				"authorization": "4871550b02396a4"
+			});
+		
+			var form = new FormData();
+			form.append("image", file);
+		
+			return fetch("https://api.imgur.com/3/image", {
+				method: "post",
+				headers: headers,
+				body: form
+			}).then(function (response) {
+				return response.json();
+			}).then(function (result) {
+				if (result.success) {
+					return result.data.link;
+				}
+		
+				throw "Upload error";
+			});
+		}
+		
+		
+		$(".message").each(function() {
+			var html = sceditor.instance(textarea).fromBBCode(($(this).html().replaceAll("<br>", "")), false);
+			$(this).html(html);
+		});
+
+
+		$(".mensaje_foro").each(function() {
+			var html = sceditor.instance(textarea).fromBBCode(($(this).html().replaceAll("<br>", "")), false);
+			$(this).html(html);
+		});
+		</script>';
 		return $html;
 	} else {
 		return '<p class="azul"><b>Debes ser Ciudadano para participar, <a href="/registrar">regístrate aquí!</a></b></p>';
