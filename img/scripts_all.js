@@ -979,6 +979,7 @@ function enriquecer(m, bbcode){
 
     // BBCODE
     if (bbcode){
+/*
         m = m.replace(/\[(b|i|em|s)\](.*?)\[\/\1\]/gi, '<$1>$2</$1>');
         m = m.replace(/\[img\](.*?)\[\/img\]/gi, '<img src="$1" alt="img" style="max-width:800px;" />');
         m = m.replace(/\[youtube\]https\:\/\/www\.youtube\.com\/watch\?v=(.*?)\[\/youtube\]/gi, '<iframe width="520" height="390" src="https://www.youtube.com/embed/$1" frameborder="0" allowfullscreen></iframe>');
@@ -986,13 +987,16 @@ function enriquecer(m, bbcode){
         m = m.replace(/\[quote\]/gi, '<blockquote><div class="quote">');
         m = m.replace(/\[quote=(.*?)\]/gi, '<blockquote><div class="quote"><cite>$1 escribió:</cite>');
         m = m.replace(/\[\/quote\]/gi, '</div></blockquote>');
-        m = m.replace(/\[empresa\](.*?)\[\/empresa\]/gi, '<div id="empresa_'+getID()+'"></div><script>loadPage(\'empresa_'+getID()+'\', \'/empresas/$1?embed=true\')</script>');
-        m = m.replace(/\[documento\](.*?)\[\/documento\]/gi, '<div id="documento_'+getID()+'"></div><script>loadPage(\'documento_'+getID()+'\', \'/doc/$1?embed=true\')</script>');
-        m = m.replace(/\[articulo\](.*?)\[\/articulo\]/gi, '<div id="articulo'+getID()+'"></div><script>loadPage(\'articulo'+getID()+'\', \'$1?embed=true\')</script>');
+
         m = m.replace(/\[estilo=(.*?)\]/gi, '<span style="$1">');
         m = m.replace(/\[\/estilo\]/gi, '</span>');
         m = m.replace(/\[spoiler=(.*?)\]/gi, '<cite>Atención spoiler de $1</cite> <span style="background-color: black" onclick="this.style.backgroundColor=\'\';">');
         m = m.replace(/\[\/spoiler\]/gi, '</span>');
+*/
+
+        m = m.replace(/\[empresa\](.*?)\[\/empresa\]/gi, '<div id="empresa_'+getID()+'"></div><script>loadPage(\'empresa_'+getID()+'\', \'/empresas/$1?embed=true\')</script>');
+        m = m.replace(/\[documento\](.*?)\[\/documento\]/gi, '<div id="documento_'+getID()+'"></div><script>loadPage(\'documento_'+getID()+'\', \'/doc/$1?embed=true\')</script>');
+        m = m.replace(/\[articulo\](.*?)\[\/articulo\]/gi, '<div id="articulo'+getID()+'"></div><script>loadPage(\'articulo'+getID()+'\', \'$1?embed=true\')</script>');
     }
 
     // Botones Instant

@@ -1,6 +1,5 @@
 <?php # POL.VirtualPol.com — Copyright (c) 2008 Javier González González <gonzo@virtualpol.com> — MIT License 
 
-
 if ($_SERVER['SERVER_ADDR'] !== $_SERVER['REMOTE_ADDR'])
 	exit('Solo el propio servidor puede ejecutar "el proceso".');
 
@@ -11,7 +10,6 @@ unset($maxsim['output']);
 
 $result = sql_old("SELECT pais FROM stats WHERE pais = '".PAIS."' AND time = '".date('Y-m-d 20:00:00')."' LIMIT 1");
 while($r = r($result)) { echo 'Ya se ha ejecutado hoy'; exit; }
-
 
 // INICIO PROCESO
 evento_chat('<b>[PROCESO] Inicio del proceso diario...</b>');
@@ -701,10 +699,12 @@ while($r = r($result_aniversario)) {
 	$aniversario[] = $r['nick'];
 }
 
-if (count($aniversario) > 1){
-	evento_chat('<b>[PROCESO]</b> En un día como mañana, ' .implode(", " ,$aniversario). ' entraron por primera vez en esta comunidad, no te olvides de felicitarles.');
-}else if (count($aniversario) == 1){
-	evento_chat('<b>[PROCESO]</b> En un día como mañana, ' . $aniversario[0] . ' entró por primera vez en esta comunidad, no te olvides de felicitarle.');
+if ($aniversario){
+	if (count($aniversario) > 1){
+		evento_chat('<b>[PROCESO]</b> En un día como mañana, ' .implode(", " ,$aniversario). ' entraron por primera vez en esta comunidad, no te olvides de felicitarles.');
+	}else if (count($aniversario) == 1){
+		evento_chat('<b>[PROCESO]</b> En un día como mañana, ' . $aniversario[0] . ' entró por primera vez en esta comunidad, no te olvides de felicitarle.');
+	}
 }
 
 
