@@ -419,6 +419,9 @@ $html .='</div>
 		
 		var textarea = document.getElementById("message");
 		sceditor.create(textarea, {
+			charset: "latin1",
+			bbcodeTrim: "true",
+			enablePasteFiltering: "true",
 			format: "bbcode",
 			locale: "es",
 			autofocus: "true",
@@ -452,7 +455,7 @@ $html .='</div>
 			
 					imgurUpload(file).then(function (url) {
 						// Replace the placeholder with the image HTML
-						placeholder.insert("<img src=\"\' + url + \'\" />");
+						placeholder.insert("<img src=\"" + url + "\" />");
 					}).catch(function () {
 						// Error so remove the placeholder
 						placeholder.cancel();
@@ -463,7 +466,7 @@ $html .='</div>
 		
 		function imgurUpload(file) {
 			var headers = new Headers({
-				"authorization": "4871550b02396a4"
+				"authorization": "Client-ID 4871550b02396a4"
 			});
 		
 			var form = new FormData();
@@ -486,13 +489,13 @@ $html .='</div>
 		
 		
 		$(".message").each(function() {
-			var html = sceditor.instance(textarea).fromBBCode(($(this).html().replaceAll("<br>", "")), false);
+			var html = sceditor.instance(textarea).fromBBCode(($(this).html().replaceAll("<br>", "").replaceAll("&nbsp;", " ")), false);
 			$(this).html(html);
 		});
 
 
 		$(".mensaje_foro").each(function() {
-			var html = sceditor.instance(textarea).fromBBCode(($(this).html().replaceAll("<br>", "")), false);
+			var html = sceditor.instance(textarea).fromBBCode(($(this).html().replaceAll("<br>", "").replaceAll("&nbsp;", " ")), false);
 			$(this).html(html);
 		});
 		</script>';
